@@ -18,3 +18,7 @@ EXAMPLE USAGE
         3) [2, 4, 0, 5, 2, 4, 1, 0, 1, 3, 7, 5, 3, 3, 0, 0, 2, 3, 0, 8, 6, 5, 0].to_histogram
 
         4) That's it
+
+MORE USAGE
+-------------
+        1) Change the number of buckets: my_array.to_histogram(num_buckets: 100)
