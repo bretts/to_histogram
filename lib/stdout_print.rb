@@ -20,9 +20,6 @@ module ToHistogram
         printf("%-20s | %-20s | %-30s | %-20s \n", range, frequency, ('%.4f' % percentage), stars)
         last_value = b[-1]
       end
-
-      puts "\n\n"
-      return nil
     end
 
   end

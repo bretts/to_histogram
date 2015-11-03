@@ -8,6 +8,7 @@ class Array
 
     stdout_print.invoke
 
-    return histogram
+    puts "\n\n"
+    return nil
   end
 end
