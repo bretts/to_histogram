@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'to_histogram'
-  s.version     = '1.0.1'
+  s.version     = '1.0.2'
   s.date        = '2015-11-02'
   s.summary     = "Creates a simple histogram output on the command line"
   s.description = "Creates a simple histogram output on the command line. Usefull in IRB sessions and command line programs"

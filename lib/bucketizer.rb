@@ -15,7 +15,7 @@ module ToHistogram
 
               # Special case where all of the results fit into the first bucket
               if buckets[0].length == arr.length
-                l_index = (arr.length - 1)
+                l_index = (arr.length)
                 break
               end
 
@@ -24,7 +24,7 @@ module ToHistogram
             end
           end
 
-          if(l_index != (arr.length - 1))
+          if(l_index <= (arr.length - 1))
             buckets << arr[l_index..(arr.length - 1)]
           end
 
