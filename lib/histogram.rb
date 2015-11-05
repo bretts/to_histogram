@@ -6,8 +6,8 @@ module ToHistogram
     include Enumerable
 
     def initialize(array, num_buckets)
-      bucketizer  = Bucketizer.new()
-      @buckets    = bucketizer.create_buckets(array, num_buckets)
+      bucketizer  = Bucketizer.new(array, num_buckets)
+      @buckets    = bucketizer.create_buckets
     end
 
     def each(&block)

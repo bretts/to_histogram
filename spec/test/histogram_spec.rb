@@ -18,7 +18,6 @@ describe 'Histogram' do
             histogram = ToHistogram::Histogram.new(@integer_data, 10)
             
             expect(histogram[0]).to eq([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-            expect(histogram[-1]).to eq([9, 9, 9, 9, 9, 9])
         end
     end
 
