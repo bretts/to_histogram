@@ -39,8 +39,11 @@ module ToHistogram
       return buckets
     end
 
+    private
     def get_bucket_increment
-      if(@arr.length <= @num_buckets)
+      if(@arr.length == 0)
+        return 0
+      elsif(@arr.length <= @num_buckets)
         increment = ((@arr[-1] - @arr[0]) / @num_buckets)
       else
         increment = ((@arr[(@arr.length * 0.9).to_i - 1] - @arr[(@arr.length * 0.1).to_i - 1]) / @num_buckets.to_f).ceil

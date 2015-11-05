@@ -59,6 +59,13 @@ describe 'Bucketizer' do
             expect(buckets[0]).to eq([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
             expect(buckets[-1]).to eq([9, 9, 9, 9, 9, 9])
         end
+
+        it 'should not crash if the array is empty' do
+            bucketizer = ToHistogram::Bucketizer.new([], 10)
+            buckets = bucketizer.create_buckets
+
+            expect(buckets.length).to eq(0)
+        end
     end
 end
 
