@@ -8,7 +8,9 @@ module ToHistogram
     def initialize(array, num_buckets)
       bucketizer  = Bucketizer.new(array, num_buckets)
       @buckets    = bucketizer.create_buckets
+      @increments = bucketizer.bucket_increments
     end
+    attr_reader :increments
 
     def each(&block)
       @buckets.each do |b|
