@@ -2,25 +2,35 @@ module ToHistogram
 
   class Bucketizer
 
-    def initialize(array, num_buckets)
+    def initialize(array, num_buckets, percentile)
       @arr                = array.sort
       @num_buckets        = num_buckets
-      @bucket_increments  = get_bucket_increment
+      @bucket_increments  = get_bucket_increment(percentile)
     end
     attr_reader :bucket_increments
 
     def create_buckets
       l_index               = 0
-      next_bucket           = (@bucket_increments == 1 && @arr[0] == 0) ? 0 : @bucket_increments
+      next_bucket           = @bucket_increments
       buckets               = []
 
+      # Deal with the special case where we have elements that == 0 and an increment sizes of 1 (count 0 as a value and don't lump it in with 1)
+      if(@arr.count(0) > 0 && next_bucket == 1)
+        bucket_0 = []
+        @arr.count(0).times { bucket_0 << @arr.shift }
+        buckets << bucket_0
+
+        next_bucket += 1
+      end
+
+      # Iterate thorough the remainder of the list in the normal case
       @arr.each_with_index do |e, i|
         break if buckets.length == (@num_buckets - 1)
 
-        if !(e <= next_bucket)
+        if (e >= next_bucket)
           buckets << @arr[l_index..(i - 1)]
 
-          # Special case where all of the results fit into the first bucket
+          # Special case here also where all of the results fit into the first bucket
           if buckets[0].length == @arr.length
             l_index = (@arr.length)
             break
@@ -40,13 +50,15 @@ module ToHistogram
     end
 
     private
-    def get_bucket_increment
+    def get_bucket_increment(percentile)
+      nth_percentile = percentile / 100.0
+
       if(@arr.length == 0)
         return 0
       elsif(@arr.length <= @num_buckets)
         increment = ((@arr[-1] - @arr[0]) / @num_buckets)
       else
-        increment = ((@arr[(@arr.length * 0.9).to_i - 1] - @arr[(@arr.length * 0.1).to_i - 1]) / @num_buckets.to_f).ceil
+        increment = ((@arr[(@arr.length * nth_percentile).to_i - 1] - @arr[0]) / @num_buckets.to_f).ceil
       end
 
       return increment
