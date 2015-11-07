@@ -28,5 +28,9 @@ module ToHistogram
       return @buckets.length
     end
 
+    def inspect
+      return "class: #{self.class} object_id: #{self.object_id}"
+    end
+
   end
 end

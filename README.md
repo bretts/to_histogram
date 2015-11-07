@@ -3,7 +3,7 @@ ToHistogram
 
 PURPOSE
 -------
-The purpose of this program is allow the user to print out a quick histogram distribution from an array when running an irb session
+The purpose of this program is to take an array of integers and return a histogram distribution for it. The program also prints out a quick histogram distribution with some info to stdout if desired
 
 FEATURES
 --------
@@ -15,7 +15,7 @@ EXAMPLE USAGE
 
         2) require 'to_histogram'
 
-        3) [2,4,0,5,2,4,1,0,1,3,7,5,3,3,0,0,2,3,0,8,6,5,0,10,11,12].to_histogram
+        3) histogram = [2,4,0,5,2,4,1,0,1,3,7,5,3,3,0,0,2,3,0,8,6,5,0,10,11,12].to_histogram
 
         4) That's it
 
@@ -28,3 +28,10 @@ MORE USAGE
 
             To see an even bucket size across all values you would just do data.to_histogram. However, if you wanted to see what was going on
             in the 90th percentile, you can also do a data.to_histogram(percentile: 90)
+
+        2) If you don't want to see the printed info and just want to get the histogram object, do the following: 
+            histogram = [2,4,0,5,2,4,1,0,1,3,7,5,3,3,0,0,2,3,0,8,6,5,0,10,11,12].to_histogram(print_info: false)
+
+            histogram.each do |bucket|
+                puts bucket.length
+            end

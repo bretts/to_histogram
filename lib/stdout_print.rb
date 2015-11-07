@@ -15,7 +15,7 @@ module ToHistogram
     private
     def print_header
       puts "\n**************************************************************"
-      puts "Results for #to_histogram(num_buckets: #{@histogram.num_buckets}, percentile: #{@histogram.percentile})"
+      puts "Results for #to_histogram(num_buckets: #{@histogram.num_buckets}, percentile: #{@histogram.percentile}, print_info: true)"
       puts "\n"
       puts "Min Value: #{@original_array[0]}, Max Value: #{@original_array[-1]}"
       puts "Mean: #{mean}, Median: #{median}, Mode: #{mode}"
