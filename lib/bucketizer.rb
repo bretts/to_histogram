@@ -14,7 +14,7 @@ module ToHistogram
 
     def create_buckets
       l_index               = 0
-      next_bucket           = @bucket_increments
+      next_bucket           = get_initial_next_bucket(@bucket_increments)
       buckets               = []
 
       # Deal with the special case where we have elements that == 0 and an increment sizes of 1 (count 0 as a value and don't lump it in with 1)
@@ -53,6 +53,14 @@ module ToHistogram
     end
 
     private
+    def get_initial_next_bucket(increments)
+      if(@arr[0] != nil && @arr[0] < 0)
+        return (@arr[0] + increments)
+      else
+        return increments
+      end
+    end
+
     def remove_elements_outside_of_percentile
       if(@percentile != 100)
         @arr = @arr[0..(@arr.length * (@percentile / 100.0) - 1).to_i]
