@@ -6,6 +6,8 @@ module ToHistogram
       @arr                = array.sort
       @num_buckets        = num_buckets
       @percentile         =percentile
+
+      remove_elements_outside_of_percentile
       @bucket_increments  = get_bucket_increment(percentile)
     end
     attr_reader :bucket_increments, :arr
@@ -14,11 +16,6 @@ module ToHistogram
       l_index               = 0
       next_bucket           = @bucket_increments
       buckets               = []
-
-      # Remove any elements outside of the percentile
-      if(@percentile != 100)
-        @arr = @arr[0..(@arr.length * (@percentile / 100.0) - 1).to_i]
-      end
 
       # Deal with the special case where we have elements that == 0 and an increment sizes of 1 (count 0 as a value and don't lump it in with 1)
       if(@arr.count(0) > 0 && next_bucket == 1)
@@ -56,15 +53,19 @@ module ToHistogram
     end
 
     private
+    def remove_elements_outside_of_percentile
+      if(@percentile != 100)
+        @arr = @arr[0..(@arr.length * (@percentile / 100.0) - 1).to_i]
+      end
+    end
+
     def get_bucket_increment(percentile)
       nth_percentile = percentile / 100.0
 
       if(@arr.length == 0)
         return 0
-      elsif(@arr.length <= @num_buckets)
-        increment = ((@arr[-1] - @arr[0]) / @num_buckets)
       else
-        increment = ((@arr[(@arr.length * nth_percentile).to_i - 1] - @arr[0]) / @num_buckets.to_f).ceil
+        increment = ((@arr[-1] - @arr[0]) / @num_buckets.to_f).ceil
       end
 
       return increment

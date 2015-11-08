@@ -1,6 +1,10 @@
+require_relative './averages'
+
 module ToHistogram
 
   class StdoutPrint
+    include Averages
+
     def initialize(histogram, original_array)
       @histogram      = histogram
       @original_array = original_array.sort
@@ -49,22 +53,7 @@ module ToHistogram
         end
 
         printf("%-20s | %-20s | %-30s | %-20s \n", range, frequency, ('%.4f' % percentage), stars)
-        last_value = b[-1]
       end
-    end
-
-    def mean(array)
-      array.reduce(:+) / array.length
-    end
-
-    def median(array)
-      array[array.length / 2]
-    end
-
-    def mode(array)
-      frequency = array.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
-      
-      array.max_by { |v| frequency[v] }
     end
 
   end
