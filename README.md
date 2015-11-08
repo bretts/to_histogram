@@ -3,7 +3,7 @@ ToHistogram
 
 PURPOSE
 -------
-The purpose of this program is to take an array of integers and return a histogram distribution for it. The program also prints out a quick histogram distribution with some info to stdout if desired
+The purpose of this program is to take an array of integers and return a histogram distribution for it. The program also prints out a quick histogram distribution with some info to stdout if desired.
 
 FEATURES
 --------

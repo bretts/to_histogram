@@ -5,14 +5,20 @@ module ToHistogram
     def initialize(array, num_buckets, percentile)
       @arr                = array.sort
       @num_buckets        = num_buckets
+      @percentile         =percentile
       @bucket_increments  = get_bucket_increment(percentile)
     end
-    attr_reader :bucket_increments
+    attr_reader :bucket_increments, :arr
 
     def create_buckets
       l_index               = 0
       next_bucket           = @bucket_increments
       buckets               = []
+
+      # Remove any elements outside of the percentile
+      if(@percentile != 100)
+        @arr = @arr[0..(@arr.length * (@percentile / 100.0) - 1).to_i]
+      end
 
       # Deal with the special case where we have elements that == 0 and an increment sizes of 1 (count 0 as a value and don't lump it in with 1)
       if(@arr.count(0) > 0 && next_bucket == 1)

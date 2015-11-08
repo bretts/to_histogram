@@ -16,16 +16,23 @@ module ToHistogram
     def print_header
       puts "\n**************************************************************"
       puts "Results for #to_histogram(num_buckets: #{@histogram.num_buckets}, percentile: #{@histogram.percentile}, print_info: true)"
+      
       puts "\n"
-      puts "Min Value: #{@original_array[0]}, Max Value: #{@original_array[-1]}"
-      puts "Mean: #{mean}, Median: #{median}, Mode: #{mode}"
+  
+      percentile_info = (@histogram.percentile == 100) ? '' : "(Numbers limited to the #{@histogram.percentile}th percentile)"
+      puts "Data set used in this calculation #{percentile_info}"
+      puts "Data set Size: #{@histogram.arr.length} items"
+      puts "Min Value: #{@histogram.arr[0]}, Max Value: #{@histogram.arr[-1]}"
+      puts "Mean: #{mean(@histogram.arr)}, Median: #{median(@histogram.arr)}, Mode: #{mode(@histogram.arr)}"
+      puts "\n"
+            
       puts "Histogram bucket sizes: #{@histogram.increments}"
       puts "**************************************************************\n\n"
     end
 
     def print_body
       total_data_value_length = (@histogram.map { |b| b.length }).reduce(:+)
-      printf("%-20s %-20s %-30s %-20s \n\n", "Range", "Frequency", "  Percentage (out of #{total_data_value_length})", "Histogram (each * =~ 1%)")
+      printf("%-20s %-20s %-30s %-20s \n\n", "Range", "Frequency", "  Percentage", "Histogram (each * =~ 1%)")
       
       @histogram.each_with_index do |b, i|
         next_bucket = (@histogram[i + 1]) ? @histogram[i + 1][0] : b[-1]
@@ -46,18 +53,18 @@ module ToHistogram
       end
     end
 
-    def mean
-      @original_array.reduce(:+) / @original_array.length
+    def mean(array)
+      array.reduce(:+) / array.length
     end
 
-    def median
-      @original_array[@original_array.length / 2]
+    def median(array)
+      array[array.length / 2]
     end
 
-    def mode
-      frequency = @original_array.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
+    def mode(array)
+      frequency = array.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
       
-      @original_array.max_by { |v| frequency[v] }
+      array.max_by { |v| frequency[v] }
     end
 
   end
