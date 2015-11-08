@@ -8,7 +8,7 @@ module ToHistogram
       @percentile         =percentile
 
       remove_elements_outside_of_percentile
-      @bucket_increments  = get_bucket_increment(percentile)
+      @bucket_increments  = get_bucket_increment
     end
     attr_reader :bucket_increments, :arr
 
@@ -59,9 +59,7 @@ module ToHistogram
       end
     end
 
-    def get_bucket_increment(percentile)
-      nth_percentile = percentile / 100.0
-
+    def get_bucket_increment
       if(@arr.length == 0)
         return 0
       else
