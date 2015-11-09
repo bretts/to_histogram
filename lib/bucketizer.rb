@@ -10,7 +10,7 @@ module ToHistogram
       remove_elements_outside_of_percentile
       @bucket_increments  = get_bucket_increment
     end
-    attr_reader :bucket_increments, :arr
+    attr_reader :bucket_increments
 
     def create_buckets
       l_index               = 0

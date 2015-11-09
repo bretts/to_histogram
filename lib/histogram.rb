@@ -11,9 +11,8 @@ module ToHistogram
       @increments   = bucketizer.bucket_increments
       @percentile   = percentile
       @num_buckets  = num_buckets
-      @arr          = bucketizer.arr
     end
-    attr_reader :increments, :percentile, :num_buckets, :arr
+    attr_reader :increments, :percentile, :num_buckets, :buckets
 
     def each(&block)
       @buckets.each do |b|

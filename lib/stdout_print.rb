@@ -26,9 +26,10 @@ module ToHistogram
   
       percentile_info = (@histogram.percentile == 100) ? '' : "(Numbers limited to the #{@histogram.percentile}th percentile)"
       @stdout.puts "Data set used in this calculation #{percentile_info}"
-      @stdout.puts "Data set Size: #{@histogram.arr.length} items"
-      @stdout.puts "Min Value: #{@histogram.arr[0]}, Max Value: #{@histogram.arr[-1]}"
-      @stdout.puts "Mean: #{mean(@histogram.arr)}, Median: #{median(@histogram.arr)}, Mode: #{mode(@histogram.arr)}"
+      @stdout.puts "Data set Size: #{@histogram.reduce(:+).length} items"
+
+      @stdout.puts "Min Value: #{@histogram[0][0]}, Max Value: #{@histogram[-1][-1]}"
+      @stdout.puts "Mean: #{mean(@histogram.reduce(:+))}, Median: #{median(@histogram.reduce(:+))}, Mode: #{mode(@histogram.reduce(:+))}"
       @stdout.puts "\n"
             
       @stdout.puts "Histogram bucket sizes: #{@histogram.increments}"
