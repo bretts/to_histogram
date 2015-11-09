@@ -5,14 +5,15 @@ module ToHistogram
   class Histogram
     include Enumerable
 
-    def initialize(array, num_buckets: 10, bucket_width: nil, percentile: 100)
+    def initialize(array, num_buckets: 10, bucket_width: 'auto', percentile: 100)
       bucketizer      = Bucketizer.new(array, num_buckets: num_buckets, bucket_width: bucket_width, percentile: percentile)
+      
       @buckets        = bucketizer.create_buckets
-      @bucket_widths  = bucketizer.bucket_widths
+      @bucket_width  = bucketizer.bucket_width
       @percentile     = percentile
       @num_buckets    = num_buckets
     end
-    attr_reader :percentile, :num_buckets, :bucket_widths, :buckets
+    attr_reader :percentile, :num_buckets, :bucket_width, :buckets
 
     def each(&block)
       @buckets.each do |b|

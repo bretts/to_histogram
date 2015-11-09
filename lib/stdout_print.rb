@@ -20,7 +20,7 @@ module ToHistogram
     private
     def print_header
       @stdout.puts "\n**************************************************************"
-      @stdout.puts "Results for #to_histogram(num_buckets: #{@histogram.num_buckets}, percentile: #{@histogram.percentile}, print_info: true)"
+      @stdout.puts "Results for #to_histogram(num_buckets: #{@histogram.num_buckets}, bucket_width: #{@histogram.bucket_width}, percentile: #{@histogram.percentile}, print_info: true)"
       
       @stdout.puts "\n"
   
@@ -32,7 +32,7 @@ module ToHistogram
       @stdout.puts "Mean: #{mean(@histogram.reduce(:+))}, Median: #{median(@histogram.reduce(:+))}, Mode: #{mode(@histogram.reduce(:+))}"
       @stdout.puts "\n"
             
-      @stdout.puts "Histogram bucket sizes: #{@histogram.bucket_widths}"
+      @stdout.puts "Histogram bucket width: #{@histogram.bucket_width}"
       @stdout.puts "**************************************************************\n\n"
     end
 
@@ -49,7 +49,7 @@ module ToHistogram
         percentage.round.times { |x| stars << '*' }
 
         if(i == (@histogram.length - 1))
-          if(b[-1] - b[0] != 0 && (b[-1] - b[0] > @histogram.bucket_widths))
+          if(b[-1] - b[0] != 0 && (b[-1] - b[0] > @histogram.bucket_width))
             range = "> than #{b[0]}"
           end
         end

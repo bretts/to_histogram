@@ -35,3 +35,9 @@ MORE USAGE
             histogram.each do |bucket|
                 puts bucket.length
             end
+
+        3) You can specify your own bucket width if you like. If you don't specify one, to_histogram will try to determine one for you.
+            data = [67,89,81,70,74,28,49,32,46,93,18,5,74,89,13,20,76,29,92,54,64,45,56,77,97,71,39,83,57,20,68,3,12,33,30,35,93,87,72,37,35,98,60,5,58,73,46,13,37,82,18,5,98,38,95,6,68,47,67,99,3,91,20,91,15]
+
+            data.to_histogram(num_buckets: 20, bucket_width: 5)
+

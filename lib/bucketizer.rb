@@ -2,19 +2,19 @@ module ToHistogram
 
   class Bucketizer
 
-    def initialize(array, num_buckets: 10, bucket_width: nil, percentile: 100)
+    def initialize(array, num_buckets: 10, bucket_width: 'auto', percentile: 100)
       @arr                = array.sort
       @num_buckets        = num_buckets
-      @percentile         =percentile
+      @percentile         = percentile
 
       remove_elements_outside_of_percentile
-      @bucket_widths  = get_bucket_increment
+      @bucket_width  = (bucket_width == 'auto') ? get_bucket_increment : bucket_width
     end
-    attr_reader :bucket_widths
+    attr_reader :bucket_width
 
     def create_buckets
       l_index               = 0
-      next_bucket           = get_initial_next_bucket(@bucket_widths)
+      next_bucket           = get_initial_next_bucket(@bucket_width)
       buckets               = []
 
       # Deal with the special case where we have elements that == 0 and an increment sizes of 1 (count 0 as a value and don't lump it in with 1)
@@ -40,7 +40,7 @@ module ToHistogram
           end
 
           l_index = i
-          next_bucket += @bucket_widths
+          next_bucket += @bucket_width
         end
       end
 
