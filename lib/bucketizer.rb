@@ -8,13 +8,13 @@ module ToHistogram
       @percentile         =percentile
 
       remove_elements_outside_of_percentile
-      @bucket_increments  = get_bucket_increment
+      @bucket_widths  = get_bucket_increment
     end
-    attr_reader :bucket_increments
+    attr_reader :bucket_widths
 
     def create_buckets
       l_index               = 0
-      next_bucket           = get_initial_next_bucket(@bucket_increments)
+      next_bucket           = get_initial_next_bucket(@bucket_widths)
       buckets               = []
 
       # Deal with the special case where we have elements that == 0 and an increment sizes of 1 (count 0 as a value and don't lump it in with 1)
@@ -40,7 +40,7 @@ module ToHistogram
           end
 
           l_index = i
-          next_bucket += @bucket_increments
+          next_bucket += @bucket_widths
         end
       end
 

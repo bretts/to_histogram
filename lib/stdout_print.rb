@@ -32,7 +32,7 @@ module ToHistogram
       @stdout.puts "Mean: #{mean(@histogram.reduce(:+))}, Median: #{median(@histogram.reduce(:+))}, Mode: #{mode(@histogram.reduce(:+))}"
       @stdout.puts "\n"
             
-      @stdout.puts "Histogram bucket sizes: #{@histogram.increments}"
+      @stdout.puts "Histogram bucket sizes: #{@histogram.bucket_widths}"
       @stdout.puts "**************************************************************\n\n"
     end
 
@@ -49,7 +49,7 @@ module ToHistogram
         percentage.round.times { |x| stars << '*' }
 
         if(i == (@histogram.length - 1))
-          if(b[-1] - b[0] != 0 && (b[-1] - b[0] > @histogram.increments))
+          if(b[-1] - b[0] != 0 && (b[-1] - b[0] > @histogram.bucket_widths))
             range = "> than #{b[0]}"
           end
         end

@@ -42,7 +42,7 @@ describe 'Bucketizer' do
                     ]
 
             bucketizer = ToHistogram::Bucketizer.new(data, num_buckets: 10, percentile: 100)
-            expect(bucketizer.bucket_increments).to eq(8832147)
+            expect(bucketizer.bucket_widths).to eq(8832147)
         end
 
         it 'should take into account percentile when determining increments' do
@@ -52,14 +52,14 @@ describe 'Bucketizer' do
                     ]
 
             bucketizer = ToHistogram::Bucketizer.new(data, num_buckets: 10, percentile: 90)
-            expect(bucketizer.bucket_increments).to eq(1)
+            expect(bucketizer.bucket_widths).to eq(1)
         end
 
         it 'should allow for and take into account negative numbers' do
             data = [73, 49, -58, -56, -9, -66, 90, 62, 26, -29, -14, 27, -56, 86, 44, -86, 91, 23, 73, 6, 18, 48, 29, -19, -10, -54, 69, 71, 14, -45, -82, 16, 11, -41, -75, -93, -46, -30, 96, -36, 13, 70, 70, 23, -95, -54, -56, 62, -21, 4, 53, -47, -42, 41, -23, -50, -25, -40, -1, -18, -17, 61, -95, -97, -54, -89, -35, 54, 88, 45, 42, 98, 51, 13, 68, -60, 7, 60, -20, 78, 4, 57, -62, -47, 21, 13, 59, 16, -42, 28, 49, 38, 19, 86, 76, -87, 38, 79, 76, -66]
 
             bucketizer = ToHistogram::Bucketizer.new(data, num_buckets: 10, percentile: 100)
-            expect(bucketizer.bucket_increments).to eq(20)
+            expect(bucketizer.bucket_widths).to eq(20)
         end
     end
 
@@ -137,7 +137,7 @@ describe 'Bucketizer' do
             buckets = bucketizer.create_buckets
             buckets = bucketizer.create_buckets
             buckets = bucketizer.create_buckets
-            expect(bucketizer.bucket_increments).to eq(8832147)
+            expect(bucketizer.bucket_widths).to eq(8832147)
         end
 
         it 'should allow for and take into account negative numbers' do
