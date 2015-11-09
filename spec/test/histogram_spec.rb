@@ -7,7 +7,7 @@ describe 'Histogram' do
     
     describe "#each" do
         it 'should yield arrays' do
-            histogram = ToHistogram::Histogram.new(@integer_data, 10, 100)
+            histogram = ToHistogram::Histogram.new(@integer_data, num_buckets: 10, percentile: 100)
             
             histogram.each { |a| expect(a.class).to eq Array }
         end
@@ -15,7 +15,7 @@ describe 'Histogram' do
 
     describe "#[]" do
         it 'should return an array at the index' do
-            histogram = ToHistogram::Histogram.new(@integer_data, 10, 100)
+            histogram = ToHistogram::Histogram.new(@integer_data, num_buckets: 10, percentile: 100)
             
             expect(histogram[0]).to eq([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
         end
@@ -23,7 +23,7 @@ describe 'Histogram' do
 
     describe "#length" do
         it 'should return the number of buckets' do
-            histogram = ToHistogram::Histogram.new(@integer_data, 2, 100)
+            histogram = ToHistogram::Histogram.new(@integer_data, num_buckets: 2, percentile: 100)
 
             expect(histogram.length).to eq(2)
         end

@@ -8,7 +8,7 @@ describe "StdoutPrint" do
             output          = StringIO.new
             data            = [0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,7,7,7,7,7,7,7,7,7,8,8,8,8,8,8,8,8,8,8,8,9,9,9,9,9,9,9,9,9932834,41335782,43423001,46295572,52671287,68025842,68036186,70284069,72884833,88321462]
 
-            histogram       = ToHistogram::Histogram.new(data, 10, 100)    
+            histogram       = ToHistogram::Histogram.new(data, num_buckets: 10, percentile: 100)    
             stdout_print    = ToHistogram::StdoutPrint.new(histogram, data, output)
             stdout_print.invoke
 
@@ -21,7 +21,7 @@ describe "StdoutPrint" do
             output          = StringIO.new
             data            = [0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,7,7,7,7,7,7,7,7,7,8,8,8,8,8,8,8,8,8,8,8,9,9,9,9,9,9,9,9,9932834,41335782,43423001,46295572,52671287,68025842,68036186,70284069,72884833,88321462]
 
-            histogram       = ToHistogram::Histogram.new(data, 10, 90)    
+            histogram       = ToHistogram::Histogram.new(data, num_buckets: 10, percentile: 90)    
             stdout_print    = ToHistogram::StdoutPrint.new(histogram, data, output)
             stdout_print.invoke
 
@@ -34,7 +34,7 @@ describe "StdoutPrint" do
             output          = StringIO.new
             data            = data = [73, 49, -58, -56, -9, -66, 90, 62, 26, -29, -14, 27, -56, 86, 44, -86, 91, 23, 73, 6, 18, 48, 29, -19, -10, -54, 69, 71, 14, -45, -82, 16, 11, -41, -75, -93, -46, -30, 96, -36, 13, 70, 70, 23, -95, -54, -56, 62, -21, 4, 53, -47, -42, 41, -23, -50, -25, -40, -1, -18, -17, 61, -95, -97, -54, -89, -35, 54, 88, 45, 42, 98, 51, 13, 68, -60, 7, 60, -20, 78, 4, 57, -62, -47, 21, 13, 59, 16, -42, 28, 49, 38, 19, 86, 76, -87, 38, 79, 76, -66]
 
-            histogram       = ToHistogram::Histogram.new(data, 10, 100)    
+            histogram       = ToHistogram::Histogram.new(data, num_buckets: 10, percentile: 100)    
             stdout_print    = ToHistogram::StdoutPrint.new(histogram, data, output)
             stdout_print.invoke
 

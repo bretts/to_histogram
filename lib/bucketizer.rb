@@ -2,7 +2,7 @@ module ToHistogram
 
   class Bucketizer
 
-    def initialize(array, num_buckets, percentile)
+    def initialize(array, num_buckets: 10, bucket_width: nil, percentile: 100)
       @arr                = array.sort
       @num_buckets        = num_buckets
       @percentile         =percentile

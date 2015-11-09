@@ -5,8 +5,8 @@ module ToHistogram
   class Histogram
     include Enumerable
 
-    def initialize(array, num_buckets, percentile)
-      bucketizer    = Bucketizer.new(array, num_buckets, percentile)
+    def initialize(array, num_buckets: 10, bucket_width: nil, percentile: 100)
+      bucketizer    = Bucketizer.new(array, num_buckets: num_buckets, bucket_width: bucket_width, percentile: percentile)
       @buckets      = bucketizer.create_buckets
       @increments   = bucketizer.bucket_increments
       @percentile   = percentile
