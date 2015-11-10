@@ -40,9 +40,11 @@ module ToHistogram
       total_data_value_length = (@histogram.map { |b| b.length }).reduce(:+)
       @stdout.printf("%-20s %-20s %-30s %-20s \n\n", "Range", "Frequency", "  Percentage", "Histogram (each * =~ 1%)")
       
+      from  = @histogram[0][0]
+      to    = (from + @histogram.bucket_width - 1)
       @histogram.each_with_index do |b, i|
-        next_bucket = (@histogram[i + 1]) ? @histogram[i + 1][0] : b[-1]
-        range       = "#{b[0]} to #{next_bucket}"
+        #next_bucket = (@histogram[i + 1]) ? @histogram[i + 1][0] : b[-1]
+        range       = "#{from} to #{to}"
         frequency   = b.length
         percentage  = ((frequency.to_f / total_data_value_length) * 100)
         stars       = ''
@@ -55,6 +57,8 @@ module ToHistogram
         end
 
         @stdout.printf("%-20s | %-20s | %-30s | %-20s \n", range, frequency, ('%.4f' % percentage), stars)
+        from = to + 1
+        to += @histogram.bucket_width
       end
     end
 

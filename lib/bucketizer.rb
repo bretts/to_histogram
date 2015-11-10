@@ -2,7 +2,7 @@ module ToHistogram
 
   class Bucketizer
 
-    def initialize(array, num_buckets: 10, bucket_width: 'auto', percentile: 100)
+    def initialize(array, num_buckets: 20, bucket_width: 'auto', percentile: 100)
       @arr                = array.sort
       @num_buckets        = num_buckets
       @percentile         = percentile
@@ -41,6 +41,12 @@ module ToHistogram
 
           l_index = i
           next_bucket += @bucket_width
+
+          # Add empty buckets until the next bucket is greater than the current l_index
+          while(next_bucket < @arr[l_index])
+            buckets << []
+            next_bucket += @bucket_width
+          end
         end
       end
 
