@@ -81,9 +81,10 @@ describe 'Bucketizer' do
 
             buckets = bucketizer.create_buckets
             expect(buckets.length).to eq(20)
-            expect(buckets[0]).to eq([0, 0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4])
-            expect(buckets[10]).to eq([50, 50, 50, 50, 50, 50, 51, 51, 51, 51, 52, 52, 52, 52, 53, 53, 53, 53, 54, 54, 54, 54, 54, 54, 54, 54])
-            expect(buckets[-1]).to eq([95, 95, 95, 95, 96, 96, 96, 96, 97, 97, 97, 97, 98, 98, 98, 98, 98, 99, 99, 99, 99, 99])
+
+            expect(buckets[0].contents).to eq([0, 0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4])
+            expect(buckets[10].contents).to eq([50, 50, 50, 50, 50, 50, 51, 51, 51, 51, 52, 52, 52, 52, 53, 53, 53, 53, 54, 54, 54, 54, 54, 54, 54, 54])
+            expect(buckets[-1].contents).to eq([95, 95, 95, 95, 96, 96, 96, 96, 97, 97, 97, 97, 98, 98, 98, 98, 98, 99, 99, 99, 99, 99])
         end
     end
 
@@ -121,16 +122,16 @@ describe 'Bucketizer' do
             buckets = bucketizer.create_buckets
             expect(buckets.length).to eq(10)
 
-            expect(buckets[0]).to eq([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-            expect(buckets[1]).to eq([1, 1, 1, 1, 1, 1, 1])
-            expect(buckets[2]).to eq([2, 2, 2, 2, 2, 2])
-            expect(buckets[3]).to eq([3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3])
-            expect(buckets[4]).to eq([4, 4, 4, 4, 4, 4, 4])
-            expect(buckets[5]).to eq([5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5])
-            expect(buckets[6]).to eq([6, 6, 6, 6])
-            expect(buckets[7]).to eq([7, 7, 7, 7, 7, 7, 7, 7, 7])
-            expect(buckets[8]).to eq([8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8])
-            expect(buckets[-1]).to eq([9, 9, 9, 9, 9, 9, 9, 9])
+            expect(buckets[0].contents).to eq([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+            expect(buckets[1].contents).to eq([1, 1, 1, 1, 1, 1, 1])
+            expect(buckets[2].contents).to eq([2, 2, 2, 2, 2, 2])
+            expect(buckets[3].contents).to eq([3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3])
+            expect(buckets[4].contents).to eq([4, 4, 4, 4, 4, 4, 4])
+            expect(buckets[5].contents).to eq([5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5])
+            expect(buckets[6].contents).to eq([6, 6, 6, 6])
+            expect(buckets[7].contents).to eq([7, 7, 7, 7, 7, 7, 7, 7, 7])
+            expect(buckets[8].contents).to eq([8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8])
+            expect(buckets[-1].contents).to eq([9, 9, 9, 9, 9, 9, 9, 9])
         end
 
         it 'should ensure that when the bucket increment is 1, and the first element in the data set is 0, that 0 and 1 do not get grouped together' do
@@ -139,8 +140,8 @@ describe 'Bucketizer' do
             bucketizer = ToHistogram::Bucketizer.new(data, num_buckets: 10, percentile: 100)
             buckets = bucketizer.create_buckets
 
-            expect(buckets[0]).to eq([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-            expect(buckets[-1]).to eq([9, 9, 9, 9, 9, 9])
+            expect(buckets[0].contents).to eq([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+            expect(buckets[-1].contents).to eq([9, 9, 9, 9, 9, 9])
         end
 
         it 'should not crash if the array is empty' do
@@ -171,16 +172,16 @@ describe 'Bucketizer' do
             buckets = bucketizer.create_buckets
             expect(buckets.length).to eq(10)
 
-            expect(buckets[0]).to eq([-97, -95, -95, -93, -89, -87, -86, -82])
-            expect(buckets[1]).to eq([-75, -66, -66, -62, -60, -58])
-            expect(buckets[2]).to eq([-56, -56, -56, -54, -54, -54, -50, -47, -47, -46, -45, -42, -42, -41, -40])
-            expect(buckets[3]).to eq([-36, -35, -30, -29, -25, -23, -21, -20, -19, -18])
-            expect(buckets[4]).to eq([-17, -14, -10, -9, -1])
-            expect(buckets[5]).to eq([4, 4, 6, 7, 11, 13, 13, 13, 14, 16, 16, 18, 19, 21])
-            expect(buckets[6]).to eq([23, 23, 26, 27, 28, 29, 38, 38, 41, 42])
-            expect(buckets[7]).to eq([44, 45, 48, 49, 49, 51, 53, 54, 57, 59, 60, 61, 62, 62])
-            expect(buckets[8]).to eq([68, 69, 70, 70, 71, 73, 73, 76, 76, 78, 79])
-            expect(buckets[-1]).to eq([86, 86, 88, 90, 91, 96, 98])
+            expect(buckets[0].contents).to eq([-97, -95, -95, -93, -89, -87, -86, -82])
+            expect(buckets[1].contents).to eq([-75, -66, -66, -62, -60, -58])
+            expect(buckets[2].contents).to eq([-56, -56, -56, -54, -54, -54, -50, -47, -47, -46, -45, -42, -42, -41, -40])
+            expect(buckets[3].contents).to eq([-36, -35, -30, -29, -25, -23, -21, -20, -19, -18])
+            expect(buckets[4].contents).to eq([-17, -14, -10, -9, -1])
+            expect(buckets[5].contents).to eq([4, 4, 6, 7, 11, 13, 13, 13, 14, 16, 16, 18, 19, 21])
+            expect(buckets[6].contents).to eq([23, 23, 26, 27, 28, 29, 38, 38, 41, 42])
+            expect(buckets[7].contents).to eq([44, 45, 48, 49, 49, 51, 53, 54, 57, 59, 60, 61, 62, 62])
+            expect(buckets[8].contents).to eq([68, 69, 70, 70, 71, 73, 73, 76, 76, 78, 79])
+            expect(buckets[-1].contents).to eq([86, 86, 88, 90, 91, 96, 98])
         end
 
         it 'should add empty buckets when there are no elements within the current width' do
@@ -190,16 +191,16 @@ describe 'Bucketizer' do
             buckets = bucketizer.create_buckets
             expect(buckets.length).to eq(10)
 
-            expect(buckets[0]).to eq([0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 8, 14, 14, 14])
-            expect(buckets[1]).to eq([25, 25, 25, 25, 40, 40, 40, 40, 41, 41, 41, 41, 42, 42, 42, 42, 42, 43, 43, 43, 44, 44, 44, 45, 45, 45, 46, 46, 46, 46, 47, 47, 47, 48, 48, 48, 48, 48, 48, 48, 49])
-            expect(buckets[2]).to eq([50, 50, 51, 51, 51, 72])
-            expect(buckets[3]).to eq([76, 89, 96, 98, 98])
-            expect(buckets[4]).to eq([100, 100, 100, 100, 101, 101, 102, 102, 102, 102, 102, 103, 103, 103, 104, 105, 105, 106, 107, 107, 107, 108, 108, 108, 108, 109, 111, 112, 112, 112, 112, 112, 112, 113, 113, 116, 117, 118, 119])
-            expect(buckets[5]).to eq([131])
-            expect(buckets[6]).to eq([])
-            expect(buckets[7]).to eq([])
-            expect(buckets[8]).to eq([217])
-            expect(buckets[9]).to eq([227, 229, 229, 245])
+            expect(buckets[0].contents).to eq([0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 8, 14, 14, 14])
+            expect(buckets[1].contents).to eq([25, 25, 25, 25, 40, 40, 40, 40, 41, 41, 41, 41, 42, 42, 42, 42, 42, 43, 43, 43, 44, 44, 44, 45, 45, 45, 46, 46, 46, 46, 47, 47, 47, 48, 48, 48, 48, 48, 48, 48, 49])
+            expect(buckets[2].contents).to eq([50, 50, 51, 51, 51, 72])
+            expect(buckets[3].contents).to eq([76, 89, 96, 98, 98])
+            expect(buckets[4].contents).to eq([100, 100, 100, 100, 101, 101, 102, 102, 102, 102, 102, 103, 103, 103, 104, 105, 105, 106, 107, 107, 107, 108, 108, 108, 108, 109, 111, 112, 112, 112, 112, 112, 112, 113, 113, 116, 117, 118, 119])
+            expect(buckets[5].contents).to eq([131])
+            expect(buckets[6].contents).to eq([])
+            expect(buckets[7].contents).to eq([])
+            expect(buckets[8].contents).to eq([217])
+            expect(buckets[9].contents).to eq([227, 229, 229, 245])
         end
     end
 end

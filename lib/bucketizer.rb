@@ -1,3 +1,5 @@
+require_relative './bucket'
+
 module ToHistogram
 
   class Bucketizer
@@ -14,6 +16,7 @@ module ToHistogram
 
     def create_buckets
       l_index               = 0
+      last_bucket           = @arr[0]
       next_bucket           = get_initial_next_bucket(@bucket_width)
       buckets               = []
 
@@ -21,9 +24,10 @@ module ToHistogram
       if(@arr.count(0) > 0 && next_bucket == 1)
         bucket_0 = []
         @arr.count(0).times { bucket_0 << @arr.shift }
-        buckets << bucket_0
+        buckets << Bucket.new(0, 0, bucket_0)
 
-        next_bucket += 1
+        last_bucket = 1
+        next_bucket = 2
       end
 
       # Iterate thorough the remainder of the list in the normal case
@@ -31,20 +35,23 @@ module ToHistogram
         break if buckets.length == (@num_buckets - 1)
 
         if (e >= next_bucket)
-          buckets << @arr[l_index..(i - 1)]
+          buckets << Bucket.new(last_bucket, next_bucket - 1, @arr[l_index..(i - 1)])
 
           # Special case here also where all of the results fit into the first bucket
-          if buckets[0].length == @arr.length
+          if buckets[0].contents.length == @arr.length
             l_index = (@arr.length)
             break
           end
 
           l_index = i
+          last_bucket = next_bucket
           next_bucket += @bucket_width
 
           # Add empty buckets until the next bucket is greater than the current l_index
           while(next_bucket < @arr[l_index])
-            buckets << []
+
+            buckets << Bucket.new(last_bucket, next_bucket - 1, [])
+            last_bucket = next_bucket
             next_bucket += @bucket_width
           end
         end
@@ -52,7 +59,7 @@ module ToHistogram
 
       # Stuff the remainder into the last bucket
       if(l_index <= (@arr.length - 1))
-        buckets << @arr[l_index..(@arr.length - 1)]
+        buckets << Bucket.new(last_bucket, next_bucket - 1, @arr[l_index..(@arr.length - 1)])
       end
 
       return buckets
@@ -62,8 +69,10 @@ module ToHistogram
     def get_initial_next_bucket(increments)
       if(@arr[0] != nil && @arr[0] < 0)
         return (@arr[0] + increments)
-      else
+      elsif(@arr[0] == 0 || @arr[0] == nil)
         return increments
+      else
+        return increments + @arr[0]
       end
     end
 

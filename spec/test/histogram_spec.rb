@@ -6,18 +6,18 @@ describe 'Histogram' do
     end
     
     describe "#each" do
-        it 'should yield arrays' do
+        it 'should yield bucket objects' do
             histogram = ToHistogram::Histogram.new(@integer_data, num_buckets: 10, percentile: 100)
             
-            histogram.each { |a| expect(a.class).to eq Array }
+            histogram.each { |a| expect(a.class).to eq ToHistogram::Bucket }
         end
     end
 
     describe "#[]" do
-        it 'should return an array at the index' do
+        it 'should return a bucket at the index' do
             histogram = ToHistogram::Histogram.new(@integer_data, num_buckets: 10, percentile: 100)
             
-            expect(histogram[0]).to eq([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+            expect(histogram[0].contents).to eq([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
         end
     end
 

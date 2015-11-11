@@ -26,10 +26,10 @@ module ToHistogram
   
       percentile_info = (@histogram.percentile == 100) ? '' : "(Numbers limited to the #{@histogram.percentile}th percentile)"
       @stdout.puts "Data set used in this calculation #{percentile_info}"
-      @stdout.puts "Data set Size: #{@histogram.reduce(:+).length} items"
+      @stdout.puts "Data set Size: #{@histogram.bucket_contents_length} items"
 
-      @stdout.puts "Min Value: #{@histogram[0][0]}, Max Value: #{@histogram[-1][-1]}"
-      @stdout.puts "Mean: #{mean(@histogram.reduce(:+))}, Median: #{median(@histogram.reduce(:+))}, Mode: #{mode(@histogram.reduce(:+))}"
+      @stdout.puts "Min Value: #{@histogram[0].contents[0]}, Max Value: #{@histogram[-1].contents[-1]}"
+      @stdout.puts "Mean: #{mean(@histogram.bucket_contents_values)}, Median: #{median(@histogram.bucket_contents_values)}, Mode: #{mode(@histogram.bucket_contents_values)}"
       @stdout.puts "\n"
             
       @stdout.puts "Histogram bucket width: #{@histogram.bucket_width}"
@@ -37,28 +37,23 @@ module ToHistogram
     end
 
     def print_body
-      total_data_value_length = (@histogram.map { |b| b.length }).reduce(:+)
       @stdout.printf("%-20s %-20s %-30s %-20s \n\n", "Range", "Frequency", "  Percentage", "Histogram (each * =~ 1%)")
-      
-      from  = @histogram[0][0]
-      to    = (from + @histogram.bucket_width - 1)
+    
       @histogram.each_with_index do |b, i|
         #next_bucket = (@histogram[i + 1]) ? @histogram[i + 1][0] : b[-1]
-        range       = "#{from} to #{to}"
-        frequency   = b.length
-        percentage  = ((frequency.to_f / total_data_value_length) * 100)
+        range       = "#{@histogram[i].from} to #{@histogram[i].to}"
+        frequency   = b.contents.length
+        percentage  = ((frequency.to_f / @histogram.bucket_contents_length) * 100)
         stars       = ''
         percentage.round.times { |x| stars << '*' }
 
         if(i == (@histogram.length - 1))
-          if(b[-1] - b[0] != 0 && (b[-1] - b[0] > @histogram.bucket_width))
-            range = "> than #{b[0]}"
+          if(b.contents[-1] - b.contents[0] != 0 && (b.contents[-1] - b.contents[0] > @histogram.bucket_width))
+            range = "> than #{b.contents[0]}"
           end
         end
 
         @stdout.printf("%-20s | %-20s | %-30s | %-20s \n", range, frequency, ('%.4f' % percentage), stars)
-        from = to + 1
-        to += @histogram.bucket_width
       end
     end
 
