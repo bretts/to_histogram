@@ -5,13 +5,14 @@ module ToHistogram
   class StdoutPrint
     include Averages
 
-    def initialize(histogram, original_array, stdout=$stdout)
+    def initialize(histogram, stdout=$stdout)
       @histogram      = histogram
-      @original_array = original_array.sort
       @stdout         = stdout
     end
 
     def invoke
+      return "You have no histogram data" if @histogram.length == 0
+
       print_header
       
       print_body
@@ -40,7 +41,6 @@ module ToHistogram
       @stdout.printf("%-20s %-20s %-30s %-20s \n\n", "Range", "Frequency", "  Percentage", "Histogram (each * =~ 1%)")
     
       @histogram.each_with_index do |b, i|
-        #next_bucket = (@histogram[i + 1]) ? @histogram[i + 1][0] : b[-1]
         range       = "#{@histogram[i].from} to #{@histogram[i].to}"
         frequency   = b.contents.length
         percentage  = ((frequency.to_f / @histogram.bucket_contents_length) * 100)
