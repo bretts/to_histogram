@@ -5,7 +5,7 @@ module ToHistogram
   class Bucketizer
 
     def initialize(array, num_buckets: 20, bucket_width: 'auto', percentile: 100)
-      @arr                = array.sort
+      @arr                = prepare_data(array)
       @num_buckets        = num_buckets
       @percentile         = percentile
 
@@ -66,6 +66,14 @@ module ToHistogram
     end
 
     private
+    def prepare_data(data)
+      if(data.any? { |e| e.is_a? String })
+        return (data.map { |e| e.to_i }).sort
+      else
+        return data.sort
+      end
+    end
+
     def get_initial_next_bucket(increments)
       if(@arr[0] != nil && @arr[0] < 0)
         return (@arr[0] + increments)

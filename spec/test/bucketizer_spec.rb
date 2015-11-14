@@ -1,11 +1,32 @@
 require_relative '../spec_helper'
 
 describe 'Bucketizer' do
-    before :all do
-        @integer_data = [2, 4, 0, 5, 2, 4, 1, 0, 1, 3, 7, 5, 3, 3, 0, 0, 2, 3, 0, 8, 6, 5, 0, 6, 1, 9, 3, 7, 8, 6, 0, 2, 6, 2, 4, 2, 4, 1, 1, 3, 0, 5, 0, 7, 4, 9, 8, 5, 1, 8, 0, 8, 5, 8, 5, 8, 3, 2, 7, 9, 7, 7, 5, 3, 7, 0, 1, 4, 4, 3, 7, 2, 2, 2, 1, 4, 5, 3, 4, 6, 4, 1, 8, 4, 0, 5, 4, 3, 3, 0, 9, 8, 5, 9, 9, 0, 5, 2, 7, 0]
+   
+    describe "#initialize" do
+        it 'should try to cast string data to integer' do
+            data =  ["2", "4", "0", "5", "2", "4", "1", "0", "1", "3", "7", "5", "3", "3", "0", "0", "2", "3", "0", "8", "6", "5", "0", "6", "1", "9", "3", "7", "8", "6", "0", "2", "6", "2", "4", "2", "4", "1", "1", "3", "0", "5", "0", "7", "4", "9", "8", "5", "1", "8", "0", "8", "5", "8", "5", "8", "3", "2", "7", "9", "7", "7", "5", "3", "7", "0", "1", "4", "4", "3", "7", "2", "2", "2", "1", "4", "5", "3", "4", "6", "4", "1", "8", "4", "0", "5", "4", "3", "3", "0", "9", "8", "5", "9", "9", "0", "5", "2", "7", "0"]
+
+            bucketizer = ToHistogram::Bucketizer.new(data, num_buckets: 2, percentile: 100)
+            buckets = bucketizer.create_buckets
+
+            expect(buckets[0].from).to eq(0)
+            expect(buckets[0].to).to eq(4)
+            expect(buckets[1].from).to eq(5)
+            expect(buckets[1].to).to eq(9)
+        end
+
+        it 'should not crash if the data is not histogramable' do
+            data =  ["hello", "i", "am", "not", "histogramable", "data"]
+
+            bucketizer = ToHistogram::Bucketizer.new(data, num_buckets: 2, percentile: 100)
+            buckets = bucketizer.create_buckets
+
+            expect(buckets.length).to eq(1)
+            expect(buckets[0].from).to eq(0)
+            expect(buckets[0].to).to eq(-1)
+        end
     end
 
-    
     describe "percentile" do
         it 'should limit the internal @arr length to the percentile value (default 100%)' do
             data = [0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,
@@ -89,6 +110,10 @@ describe 'Bucketizer' do
     end
 
     describe "#create_buckets" do
+        before :all do
+            @integer_data = [2, 4, 0, 5, 2, 4, 1, 0, 1, 3, 7, 5, 3, 3, 0, 0, 2, 3, 0, 8, 6, 5, 0, 6, 1, 9, 3, 7, 8, 6, 0, 2, 6, 2, 4, 2, 4, 1, 1, 3, 0, 5, 0, 7, 4, 9, 8, 5, 1, 8, 0, 8, 5, 8, 5, 8, 3, 2, 7, 9, 7, 7, 5, 3, 7, 0, 1, 4, 4, 3, 7, 2, 2, 2, 1, 4, 5, 3, 4, 6, 4, 1, 8, 4, 0, 5, 4, 3, 3, 0, 9, 8, 5, 9, 9, 0, 5, 2, 7, 0]
+        end
+
         it 'should return an array of buckets' do
             bucketizer = ToHistogram::Bucketizer.new(@integer_data, num_buckets: 2, percentile: 100)
             buckets = bucketizer.create_buckets

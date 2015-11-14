@@ -10,8 +10,16 @@ module ToHistogram
       @stdout         = stdout
     end
 
-    def invoke
-      return "You have no histogram data" if @histogram.length == 0
+    def invoke      
+      if @histogram.length == 0
+        @stdout.puts "You have no histogram data"
+        return
+      end
+
+      if (@histogram.length == 1 && (@histogram[0].from == 0 && @histogram[0].to == -1))
+        @stdout.puts "The data you have provided is not histogram-able" 
+        return
+      end
 
       print_header
       

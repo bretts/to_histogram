@@ -65,8 +65,34 @@ describe "StdoutPrint" do
             stdout_print.invoke
 
             puts output.string
-            expected_output = ""
+            expected_output = "You have no histogram data\n"
             expect(output.string).to eq(expected_output)
         end
+
+        it 'should not crash if the data provided is not histogramable' do
+            output          = StringIO.new
+            data =  ["hello", "i", "am", "not", "histogramable", "data"]
+
+            histogram       = ToHistogram::Histogram.new(data, num_buckets: 10, percentile: 100)    
+            stdout_print    = ToHistogram::StdoutPrint.new(histogram, output)
+            stdout_print.invoke
+
+            puts output.string
+            expected_output = "The data you have provided is not histogram-able\n"
+            expect(output.string).to eq(expected_output)
+        end
+
+        it 'should be able to display data if the initial input was an array of strings instead of integers' do
+            output          = StringIO.new
+            data            = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "1", "1", "1", "1", "1", "1", "2", "2", "2", "2", "2", "2", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "4", "4", "4", "4", "4", "4", "4", "5", "5", "5", "5", "5", "5", "5", "5", "5", "5", "5", "5", "5", "6", "6", "6", "6", "7", "7", "7", "7", "7", "7", "7", "7", "7", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "9", "9", "9", "9", "9", "9", "9", "9", "9932834", "41335782", "43423001", "46295572", "52671287", "68025842", "68036186", "70284069", "72884833", "88321462"]
+
+            histogram       = ToHistogram::Histogram.new(data, num_buckets: 10, percentile: 100)    
+            stdout_print    = ToHistogram::StdoutPrint.new(histogram, output)
+            stdout_print.invoke
+
+            puts output.string
+            expected_output = "\n**************************************************************\nResults for #to_histogram(num_buckets: 10, bucket_width: 8832147, percentile: 100, print_info: true)\n\nData set used in this calculation \nData set Size: 100 items\nMin Value: 0, Max Value: 88321462\nMean: 5612112, Median: 5, Mode: 3\n\nHistogram bucket width: 8832147\n**************************************************************\n\nRange                Frequency              Percentage                   Histogram (each * =~ 1%) \n\n0 to 8832146         | 90                   | 90.0000                        | ****************************************************************************************** \n8832147 to 17664293  | 1                    | 1.0000                         | *                    \n17664294 to 26496440 | 0                    | 0.0000                         |                      \n26496441 to 35328587 | 0                    | 0.0000                         |                      \n35328588 to 44160734 | 2                    | 2.0000                         | **                   \n44160735 to 52992881 | 2                    | 2.0000                         | **                   \n52992882 to 61825028 | 0                    | 0.0000                         |                      \n61825029 to 70657175 | 3                    | 3.0000                         | ***                  \n70657176 to 79489322 | 1                    | 1.0000                         | *                    \n79489323 to 88321469 | 1                    | 1.0000                         | *                    \n"
+            expect(output.string).to eq(expected_output)
+        end        
     end
 end
