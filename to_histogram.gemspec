@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'to_histogram'
-  s.version     = '1.0.13'
+  s.version     = '1.0.14'
   s.date        = '2015-11-10'
   s.summary     = "Creates a simple histogram output on the command line"
   s.description = "Adds #to_histogram to Array. Returns a histogram distribution object from an Array and optionally prints detailed info to stdout."
