@@ -53,7 +53,8 @@ module ToHistogram
         frequency   = b.contents.length
         percentage  = ((frequency.to_f / @histogram.bucket_contents_length) * 100)
         stars       = ''
-        percentage.round.times { |x| stars << '*' }
+
+        percentage.ceil.times { |x| stars << '*' }
 
         if(i == (@histogram.length - 1))
           if(b.contents[-1] - b.contents[0] != 0 && (b.contents[-1] - b.contents[0] > @histogram.bucket_width))
