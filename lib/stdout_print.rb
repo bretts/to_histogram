@@ -13,22 +13,17 @@ module ToHistogram
     def invoke      
       if @histogram.length == 0
         @stdout.puts "You have no histogram data"
-        return
-      end
-
-      if (@histogram.length == 1 && (@histogram[0].from == 0 && @histogram[0].to == -1))
+      elsif (@histogram.length == 1 && (@histogram[0].from == 0 && @histogram[0].to == -1))
         @stdout.puts "The data you have provided is not histogram-able" 
-        return
+      else
+        print_header
+        print_body
       end
-
-      print_header
-      
-      print_body
     end
 
     private
     def print_header
-      @stdout.puts "\n**************************************************************"
+      @stdout.print "\r**************************************************************\n"
       @stdout.puts "Results for #to_histogram(num_buckets: #{@histogram.num_buckets}, bucket_width: #{@histogram.bucket_width}, percentile: #{@histogram.percentile}, print_info: true)"
       
       @stdout.puts "\n"
@@ -55,6 +50,7 @@ module ToHistogram
         stars       = ''
 
         percentage.ceil.times { |x| stars << '*' }
+        stars.length.upto(100) { |x| stars << ' ' }
 
         if(i == (@histogram.length - 1))
           if(b.contents[-1] - b.contents[0] != 0 && (b.contents[-1] - b.contents[0] > @histogram.bucket_width))
