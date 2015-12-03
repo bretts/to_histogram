@@ -25,6 +25,20 @@ describe 'Bucketizer' do
             expect(buckets[0].from).to eq(0)
             expect(buckets[0].to).to eq(-1)
         end
+
+        it 'should remove nil values' do
+            bucketizer = ToHistogram::Bucketizer.new([1, 2, 3, nil, nil, 4, 5, 6])
+            buckets = bucketizer.create_buckets
+
+            expect(buckets.length).to eq(6)
+        end
+
+        it 'should remove empty string values' do
+            bucketizer = ToHistogram::Bucketizer.new([1, 2, 3, "", "", 4, 5, 6, 7, 8])
+            buckets = bucketizer.create_buckets
+
+            expect(buckets.length).to eq(8)
+        end
     end
 
     describe "percentile" do

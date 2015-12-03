@@ -67,6 +67,9 @@ module ToHistogram
 
     private
     def prepare_data(data)
+      data.delete(nil)
+      data.delete("")
+
       if(data.any? { |e| e.is_a? String })
         return (data.map { |e| e.to_i }).sort
       else
