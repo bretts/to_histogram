@@ -5,9 +5,10 @@ module ToHistogram
   class StdoutPrint
     include Averages
 
-    def initialize(histogram, stdout=$stdout)
+    def initialize(histogram, stdout=$stdout, show_header: true)
       @histogram      = histogram
       @stdout         = stdout
+      @show_header    = show_header
     end
 
     def invoke      
@@ -16,7 +17,7 @@ module ToHistogram
       elsif (@histogram.length == 1 && (@histogram[0].from == 0 && @histogram[0].to == -1))
         @stdout.puts "The data you have provided is not histogram-able" 
       else
-        print_header
+        print_header if @show_header
         print_body
       end
     end
@@ -24,7 +25,7 @@ module ToHistogram
     private
     def print_header
       @stdout.print "\r**************************************************************\n"
-      @stdout.puts "Results for #to_histogram(num_buckets: #{@histogram.num_buckets}, bucket_width: #{@histogram.bucket_width}, percentile: #{@histogram.percentile}, print_info: true)"
+      @stdout.puts "Results for #to_histogram(num_buckets: #{@histogram.num_buckets}, bucket_width: #{@histogram.bucket_width}, percentile: #{@histogram.percentile}, print_info: true, print_header: #{@show_header})"
       
       @stdout.puts "\n"
   
